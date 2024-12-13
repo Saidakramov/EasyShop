@@ -1,12 +1,13 @@
 package org.yearup.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.yearup.data.CategoryDao;
 import org.yearup.data.ProductDao;
 import org.yearup.models.Category;
 import org.yearup.models.Product;
+import org.yearup.services.CategoryService;
 
 import java.util.List;
 
@@ -14,26 +15,40 @@ import java.util.List;
 // add the annotation to make this controller the endpoint for the following url
     // http://localhost:8080/categories
 // add annotation to allow cross site origin requests
+@RestController
+@RequestMapping("categories")
 public class CategoriesController
 {
-    private CategoryDao categoryDao;
+    private CategoryService categoryService;
     private ProductDao productDao;
+
+    @Autowired
+    public CategoriesController(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
 
 
     // create an Autowired controller to inject the categoryDao and ProductDao
 
     // add the appropriate annotation for a get action
-    public List<Category> getAll()
+    @GetMapping
+    public ResponseEntity<List<Category>> getAll()
     {
         // find and return all categories
-        return null;
+        return ResponseEntity.ok(categoryService.getAllCategories());
     }
 
     // add the appropriate annotation for a get action
-    public Category getById(@PathVariable int id)
+    @GetMapping("{id}")
+    public ResponseEntity<Category> getById(@PathVariable int id)
     {
         // get the category by id
-        return null;
+        Category categoryFound = categoryService.getById(id);
+
+        if (categoryFound == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(categoryFound);
     }
 
     // the url to return all products in category 1 would look like this

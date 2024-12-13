@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.yearup.models.Product;
 import org.yearup.data.ProductDao;
+import org.yearup.services.ProductService;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -16,13 +17,14 @@ import java.util.List;
 @CrossOrigin
 public class ProductsController
 {
-    private ProductDao productDao;
+    private ProductService productService;
 
     @Autowired
-    public ProductsController(ProductDao productDao)
-    {
-        this.productDao = productDao;
+    public ProductsController(ProductService productService) {
+        this.productService = productService;
     }
+
+
 
     @GetMapping("")
     @PreAuthorize("permitAll()")
@@ -34,7 +36,7 @@ public class ProductsController
     {
         try
         {
-            return productDao.search(categoryId, minPrice, maxPrice, color);
+            return productService.search(categoryId, minPrice, maxPrice, color);
         }
         catch(Exception ex)
         {
@@ -48,7 +50,7 @@ public class ProductsController
     {
         try
         {
-            var product = productDao.getById(id);
+            var product = productService.getById(id);
 
             if(product == null)
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -67,7 +69,7 @@ public class ProductsController
     {
         try
         {
-            return productDao.create(product);
+            return productService.create(product);
         }
         catch(Exception ex)
         {
@@ -81,7 +83,7 @@ public class ProductsController
     {
         try
         {
-            productDao.create(product);
+            productService.create(product);
         }
         catch(Exception ex)
         {
@@ -95,12 +97,12 @@ public class ProductsController
     {
         try
         {
-            var product = productDao.getById(id);
+            var product = productService.getById(id);
 
             if(product == null)
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
-            productDao.delete(id);
+            productService.delete(id);
         }
         catch(Exception ex)
         {
