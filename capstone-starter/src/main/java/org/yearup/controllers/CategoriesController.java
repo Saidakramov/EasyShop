@@ -3,6 +3,7 @@ package org.yearup.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.method.P;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.yearup.data.CategoryDao;
@@ -86,13 +87,14 @@ public class CategoriesController
     // add annotation to ensure that only an ADMIN can call this function
     @PutMapping("{categoryId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Void> updateCategory(@PathVariable int categoryId, @RequestBody Category category)
+    public ResponseEntity<Category> updateCategory(@PathVariable int categoryId, @RequestBody Category category)
     {
         // update the category by id
-        boolean success = categoryService.update(categoryId, category);
+        Category category1 = categoryService.update(categoryId, category);
+//        boolean success = categoryService.update(categoryId, category);
 
-        if (success) {
-            return ResponseEntity.ok().build();
+        if (category1 != null) {
+            return ResponseEntity.ok(category1);
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -106,8 +108,15 @@ public class CategoriesController
     public ResponseEntity<Void> deleteCategory(@PathVariable int categoryId)
     {
         // delete the category by id
+       //boolean success =  categoryService.delete(categoryId);
         categoryService.delete(categoryId);
+        Category category = categoryService.getById(categoryId);
 
-        return ResponseEntity.ok().build();
+        if (category != null) {
+            return ResponseEntity.badRequest().build();
+        } else {
+            return ResponseEntity.ok().build();
+        }
+
     }
 }
