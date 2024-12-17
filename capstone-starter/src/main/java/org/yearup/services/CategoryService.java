@@ -29,13 +29,16 @@ public class CategoryService {
         return categoryRepository.save(category);
     }
 
-    public void update(int categoryId, Category category) {
+    public boolean update(int categoryId, Category category) {
         Category categoryToBeUpdated = getById(categoryId);
 
         if (categoryToBeUpdated != null) {
             categoryToBeUpdated = new Category(category.getCategoryId(), category.getName(), category.getDescription());
 
             categoryRepository.save(categoryToBeUpdated);
+            return true;
+        } else {
+            return false;
         }
 
     }

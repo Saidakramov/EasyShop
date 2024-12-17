@@ -1,17 +1,26 @@
 package org.yearup.models;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 
+@Table(name = "products")
+@Entity
 public class Product
 {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_id")
     private int productId;
     private String name;
     private BigDecimal price;
+    @Column(name = "category_id")
     private int categoryId;
     private String description;
     private String color;
     private int stock;
+    @Column(name = "featured")
     private boolean isFeatured;
+    @Column(name = "image_url")
     private String imageUrl;
 
     public Product()

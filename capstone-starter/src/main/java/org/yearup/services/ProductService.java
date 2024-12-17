@@ -18,7 +18,23 @@ public class ProductService {
     }
 
     public List<Product> search(Integer categoryId, BigDecimal minPrice, BigDecimal maxPrice, String color) {
-        return productRepository.findAll();
+        List<Product> products = productRepository.findAll();
+        if(categoryId != null) {
+            products = productRepository.findByCategoryId(categoryId);
+        }
+        if(minPrice != null) {
+            List<Product> tempProducts = productRepository.findByPriceGreaterThan(minPrice);
+            products.retainAll(tempProducts);
+        }
+        if(maxPrice != null) {
+            List<Product> tempProducts = productRepository.findByPriceLessThan(maxPrice);
+            products.retainAll(tempProducts);
+        }
+        if(color != null) {
+            List<Product> tempProducts = productRepository.findByColor(color);
+            products.retainAll(tempProducts);
+        }
+        return products;
     }
 
     public List<Product> listByCategoryId(int categoryId) {

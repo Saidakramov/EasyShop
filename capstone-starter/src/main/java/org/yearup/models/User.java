@@ -3,18 +3,23 @@ package org.yearup.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.yearup.models.authentication.Authority;
 
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@Entity
 public class User {
 
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
    private int id;
    private String username;
    @JsonIgnore
    private String password;
    @JsonIgnore
    private boolean activated;
+   @Transient
    private Set<Authority> authorities = new HashSet<>();
 
    public User() {
@@ -122,4 +127,6 @@ public class User {
 
       return "ROLE_USER";
    }
+
+
 }
