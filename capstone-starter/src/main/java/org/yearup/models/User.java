@@ -9,15 +9,19 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@Table(name = "users")
 public class User {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
+   @Column(name = "user_id")
    private int id;
    private String username;
    @JsonIgnore
+   @Column(name = "hashed_password")
    private String password;
    @JsonIgnore
+   @Transient
    private boolean activated;
    @Transient
    private Set<Authority> authorities = new HashSet<>();
