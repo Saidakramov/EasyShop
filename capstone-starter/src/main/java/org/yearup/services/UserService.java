@@ -16,7 +16,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<User> getAll() {
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
@@ -31,17 +31,17 @@ public class UserService {
     }
 
     public int getIdByUsername(String username) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
-
-        return user.getId();
+        return userRepository.getIdByUsername(username);
     }
 
     public User create(User user) {
+        if (userRepository.existsByUsername(user.getUsername())) {
+            throw new IllegalArgumentException("User with this username already exists");
+        }
         return userRepository.save(user);
     }
 
-    public boolean exists(String username) {
-        return userRepository.findByUsername(username).orElse(null) == null ? false: true;
+    public boolean userExists(String username) {
+        return userRepository.existsByUsername(username);
     }
 }

@@ -18,6 +18,8 @@ public class ProductService {
     }
 
     public List<Product> search(Integer categoryId, BigDecimal minPrice, BigDecimal maxPrice, String color) {
+
+        // Maaike helped
         List<Product> products = productRepository.findAll();
         if(categoryId != null) {
             products = productRepository.findByCategoryId(categoryId);

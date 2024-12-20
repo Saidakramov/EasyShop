@@ -94,6 +94,7 @@ public class ShoppingCartController
 //                shoppingCart.setItems(new HashMap<>());
 //            }
             if (shoppingCart.contains(productId)) {
+                // Maaike helped
                 shoppingCartDao.updateQuantity(userId, productId, shoppingCart.getItems().get(productId).getQuantity()+1);
             } else {
                 item.setProduct(optionalProduct.get());
@@ -124,7 +125,7 @@ public class ShoppingCartController
         try {
             // validate quantity
             if (item.getQuantity() <= 0) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
             }
 
             // get the username
@@ -132,7 +133,7 @@ public class ShoppingCartController
             // find user by username
             Optional<User> optionalUser = userService.getByUserName(userName);
             if (optionalUser.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
             }
 
             User user = optionalUser.get();
@@ -142,17 +143,17 @@ public class ShoppingCartController
             ShoppingCart shoppingCart = shoppingCartDao.getByUserId(userId);
 
             if (shoppingCart == null || !shoppingCart.contains(productId)) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
             }
 
-
             shoppingCartDao.updateQuantity(userId, productId, item.getQuantity());
+            ShoppingCart updateCart = shoppingCartDao.getByUserId(userId);
 
-            return ResponseEntity.status(HttpStatus.OK).body(shoppingCart);
+            return ResponseEntity.ok(updateCart);
 
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 

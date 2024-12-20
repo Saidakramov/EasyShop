@@ -22,6 +22,7 @@ import org.yearup.models.authentication.RegisterUserDto;
 import org.yearup.models.User;
 import org.yearup.security.jwt.JWTFilter;
 import org.yearup.security.jwt.TokenProvider;
+import org.yearup.services.ProfileService;
 
 @RestController
 @CrossOrigin
@@ -31,13 +32,13 @@ public class AuthenticationController {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private UserDao userDao;
-    private ProfileDao profileDao;
+    private ProfileService profileService;
 
-    public AuthenticationController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder, UserDao userDao, ProfileDao profileDao) {
+    public AuthenticationController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder, UserDao userDao, ProfileService profileService) {
         this.tokenProvider = tokenProvider;
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.userDao = userDao;
-        this.profileDao = profileDao;
+        this.profileService = profileService;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -84,7 +85,7 @@ public class AuthenticationController {
             // create profile
             Profile profile = new Profile();
             profile.setUserId(user.getId());
-            profileDao.create(profile);
+            profileService.create(profile);
 
             return new ResponseEntity<>(user, HttpStatus.CREATED);
         }

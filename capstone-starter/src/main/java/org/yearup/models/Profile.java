@@ -1,17 +1,18 @@
 package org.yearup.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "profiles")
 public class Profile
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private int userId;
+    @Column(name = "first_name")
     private String firstName = "";
+    @Column(name = "last_name")
     private String lastName = "";
     private String phone = "";
     private String email = "";
@@ -19,6 +20,8 @@ public class Profile
     private String city = "";
     private String state = "";
     private String zip = "";
+
+    //private String username;
 
     public Profile()
     {
@@ -36,6 +39,14 @@ public class Profile
         this.state = state;
         this.zip = zip;
     }
+
+//    public String getUsername() {
+//        return username;
+//    }
+//
+//    public void setUsername(String username) {
+//        this.username = username;
+//    }
 
     public int getUserId()
     {
