@@ -64,3 +64,7 @@
 - `Filter` helps users filter based on Categories, minimum or maximum price, and color preference.
 - The `Profile` shows detailed information, such as the user's name, last name, and address. If it's empty, the user can input the information and click the update button to save it.
 - The `Views Cart` or `Cart Icon` on the right directs users to the cart to view added products and their quantities.
+
+## Screenshots
+### Projects
+![Project.png](Resources/Project.png)
